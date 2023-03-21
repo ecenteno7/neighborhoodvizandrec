@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import Map from './components/Map';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <p>
           CSE 6242 Group Project
         </p>
+        <Map/>
         <a
           className="App-link"
           href="https://reactjs.org"
