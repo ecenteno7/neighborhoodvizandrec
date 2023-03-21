@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Map from './components/Map';
+import Map from './components/MapComponent';
 
 function App() {
   return (
