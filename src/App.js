@@ -6,13 +6,6 @@ import atlanta_geojson from './resources/atlanta.geojson';
 import chicago_geojson from './resources/chicago.geojson';
 
 function App() {
-  var selectedGeoJson = atlanta_geojson;
-  var selectedInitialViewState = {
-    longitude: -84.376656, 
-    latitude: 33.749542, 
-    zoom: 10
-  };
-
   const [selectedMap, setSelectedMap] = React.useState('map1');
 
   const handleMapSelection = (event, newSelectedMap) => {
@@ -33,31 +26,6 @@ function App() {
       };
     }
   };
-
-  function getGeoJson() {
-    if (selectedMap === 'map1') {
-      return atlanta_geojson;
-    } else {
-      return chicago_geojson;
-    }
-  }
-
-  function getInitialViewState() {
-    console.log("selectedMap: " + selectedMap);
-    if (selectedMap === 'map1') {
-      return {
-        longitude: -84.376656, 
-        latitude: 33.749542, 
-        zoom: 10
-      };
-    } else {
-      return {
-        longitude: 87.629798, 
-        latitude: 41.878114, 
-        zoom: 10
-      };
-    }
-  }
 
   return (
     <div>
