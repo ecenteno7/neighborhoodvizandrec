@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Map, {Source, Layer} from 'react-map-gl';
 
-class MapComponent extends Component{
+class MapComponent extends Component {
     constructor(props){
         super(props)
     }
