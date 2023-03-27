@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
-import Map from './components/MapComponent';
+import * as React from 'react';
+import MapComponent from './components/MapComponent';
+import atlanta_geojson from './resources/atlanta.geojson';
+import chicago_geojson from './resources/chicago.geojson';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          CSE 6242 Group Project
-        </p>
-        <Map/>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <MapComponent 
+        geojson={atlanta_geojson} 
+        initialViewState={{
+          longitude: -84.376656, 
+          latitude: 33.749542, 
+          zoom: 10}}>
+      </MapComponent>
     </div>
   );
 }

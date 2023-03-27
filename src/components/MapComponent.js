@@ -1,30 +1,34 @@
-import React, {useState} from 'react'
-import Map from 'react-map-gl';
+import React, { Component } from 'react'
+import Map, {Source, Layer} from 'react-map-gl';
 
-
-export default function MapComponent() {
-
-    const [count, setCount] = useState(0);
-
-    const handleClick = (e) => {
-        setCount(count + 1);
+class MapComponent extends Component{
+    constructor(props){
+        super(props)
     }
-
-    return (
-        <>
-            <button onClick={handleClick}></button>
-            <div>Map</div>
-            <p>{count}</p>
+      
+    layerStyle = {
+        id: 'point',
+        type: 'fill',
+        paint: {
+          "fill-color": "red",
+          "fill-opacity": 0.2
+        }
+    };
+      
+    render() {
+        return (
             <Map
                 mapboxAccessToken={process.env.REACT_APP_API_KEY}
-                initialViewState={{
-                    longitude: -84.386330,
-                    latitude: 33.73,
-                    zoom: 12
-                }}
-                style={{width: 600, height: 400}}
+                initialViewState = {this.props.initialViewState}
+                style={{width: 600, height: 400, margin: 'auto', padding: 20}}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
-            />
-        </>
-    )
+            >
+                <Source id="my-data" type="geojson" data={this.props.geojson}>
+                    <Layer {...this.layerStyle} />
+                </Source>
+            </Map>
+        );
+    }
 }
+
+export default MapComponent;
