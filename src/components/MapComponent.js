@@ -42,53 +42,32 @@ class MapComponent extends Component {
       return interest.key;
     });
 
-    console.log(prefNeighborhoods)
-    
+    console.log(prefNeighborhoods);
+
     if (this.state.selectedNeighborhoods.length == 3) {
       return;
     }
-    
+
     this.props.geojson.features.map((feature) => {
       if (prefNeighborhoods.includes(feature.properties.name)) {
         this.setState({
-          selectedNeighborhoods: this.state.selectedNeighborhoods.push(feature)
+          selectedNeighborhoods: this.state.selectedNeighborhoods.push(feature),
         });
-        
       }
     });
 
-    // this.props.geojson.features.map((feature) => {
-    //   console.log(this.state.initGeoJson.filter((initFeature) => { 
-    //     // console.log(initFeature.properties.name)
-    //     return initFeature.properties.name != feature.properties.name; 
-    //   }))
-    //   let filteredArr = this.state.initGeoJson.filter((initFeature) => { 
-    //     // console.log(initFeature.properties.name)
-    //     return initFeature.properties.name != feature.properties.name; 
-    //   })
-      
-    //   this.setState({
-    //     initGeoJson: filteredArr
-    //   });
-
-
-    //   console.log(filteredArr)
-    // })
-
-    
-    
     this.setState({
       renderInitGeoJson: {
         type: "FeatureCollection",
-        features: this.state.initGeoJson
-      }
-    })
+        features: this.state.initGeoJson,
+      },
+    });
     this.setState({
       selectedNeighborhoodsGeoJson: {
         type: "FeatureCollection",
-        features: this.state.selectedNeighborhoods
-      }
-    })
+        features: this.state.selectedNeighborhoods,
+      },
+    });
     console.log(this.state.selectedNeighborhoodsGeoJson);
   }
 
@@ -118,13 +97,16 @@ class MapComponent extends Component {
         style={{ width: 600, height: 400, margin: "auto", padding: 20 }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
-        <Source id="my-data-selected" type="geojson" data={this.state.selectedNeighborhoodsGeoJson}>
+        <Source
+          id="my-data-selected"
+          type="geojson"
+          data={this.state.selectedNeighborhoodsGeoJson}
+        >
           <Layer key={"selected"} {...this.selectedLayerStyle} />
         </Source>
         <Source id="my-data" type="geojson" data={this.state.renderInitGeoJson}>
           <Layer key={"rest"} {...this.layerStyle} />
         </Source>
-        
       </Map>
     );
   }

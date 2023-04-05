@@ -36,15 +36,24 @@ export default function PreferencesComponent() {
   const renderResults = () => {
     return res.neighborhoods.map((pointOfInterest) => {
       return (
-        <Grid item xs={8}>
+        <Grid item xs={10}>
           <Paper elevation={3}>
-            <h2>{pointOfInterest.key}</h2>
-            <em>Description</em>
-            <p>{pointOfInterest.description}</p>
-            <em>Areas you may enjoy:</em>
-            {pointOfInterest.pointsOfInterest.map((feature) => {
-              return <li>{feature}</li>;
-            })}
+            <div
+              style={{
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 0,
+                paddingBottom: 10,
+              }}
+            >
+              <h2>{pointOfInterest.key}</h2>
+              <em>Description</em>
+              <p>{pointOfInterest.description}</p>
+              <em>Areas you may enjoy:</em>
+              {pointOfInterest.pointsOfInterest.map((feature) => {
+                return <li>{feature}</li>;
+              })}
+            </div>
           </Paper>
         </Grid>
       );
@@ -53,7 +62,7 @@ export default function PreferencesComponent() {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={0} marginLeft={3}>
         {renderResults()}
       </Grid>
     </>

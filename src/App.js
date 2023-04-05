@@ -12,6 +12,9 @@ import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import atlanta_geojson from "./resources/atlanta.json";
 import chicago_geojson from "./resources/chicago.json";
+import PreferencesComponent from "./components/PreferencesComponent";
+
+import Grid from "@mui/material/Grid";
 
 function App() {
   const [selectedMap, setSelectedMap] = React.useState("map1");
@@ -55,87 +58,146 @@ function App() {
   };
 
   return (
-    <div style={{ display: "flex", margin: "auto" }}>
-      <Paper elevation={24} style={{ margin: 20, width: 400, height: 700 }}>
-        <FormControl fullWidth style={{ margin: 20, width: 360 }}>
-          <InputLabel id="demo-simple-select-label">Region</InputLabel>
-          <Select
-            labelId="region-select-label"
-            id="region-select"
-            value={selectedRegion}
-            label="Age"
-            onChange={handleRegionSelection}
-          >
-            {getMenuItems()}
-          </Select>
-        </FormControl>
-        <FormControl fullWidth style={{ margin: 20, width: 360 }}>
-          <InputLabel id="activity-select-label">Activity</InputLabel>
-          <Select
-            style={{ marginTop: 20 }}
-            labelId="activity-select-label"
-            id="activity-select"
-            multiple
-            value={selectedActivities}
-            onChange={handleActivitySelection}
-            input={
-              <OutlinedInput
-                id="select-multiple-chip"
-                label="activity-select-label"
-              />
-            }
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-          >
-            {activities.map((activity) => (
-              <MenuItem key={activity} value={activity}>
-                {activity}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Paper>
-      <Paper elevation={24} style={{ margin: 20, width: 700, height: 700 }}>
-        <ToggleButtonGroup
-          value={selectedMap}
-          exclusive
-          onChange={handleMapSelection}
-          style={{ width: 500, height: 25, margin: "auto", padding: 20 }}
+    <div
+      style={{
+        display: "flex",
+        margin: "auto",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Grid
+        container
+        spacing={0}
+        marginLeft={3}
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Grid item>
+          <h1>Header</h1>
+        </Grid>
+        <Grid
+          container
+          item
+          spacing={0}
+          marginLeft={3}
+          style={{
+            display: "flex",
+            margin: "auto",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <ToggleButton value="map1" aria-label="left aligned">
-            <p>Map 1</p>
-          </ToggleButton>
-          <ToggleButton value="map2" aria-label="centered">
-            <p>Map 2</p>
-          </ToggleButton>
-        </ToggleButtonGroup>
-        {selectedMap == "map1" && (
-          <MapComponent
-            geojson={chicago_geojson}
-            initialViewState={{
-              longitude: -87.63238,
-              latitude: 41.84372,
-              zoom: 9,
-            }}
-          ></MapComponent>
-          
-        )}
-        {selectedMap == "map2" && (
-          <MapComponent
-            geojson={atlanta_geojson}
-            initialViewState={{
-              longitude: -84.376656,
-              latitude: 33.749542,
-              zoom: 10,
-            }}
-          ></MapComponent>
-        )}
-      </Paper>
+          <Grid item>
+            <Paper
+              elevation={24}
+              style={{
+                margin: 20,
+                width: 400,
+                height: 700,
+                maxHeight: 700,
+                overflow: "auto",
+              }}
+            >
+              {selectedMap == "map1" ? (
+                <div>
+                  <FormControl fullWidth style={{ margin: 20, width: 360 }}>
+                    <InputLabel id="demo-simple-select-label">
+                      Region
+                    </InputLabel>
+                    <Select
+                      labelId="region-select-label"
+                      id="region-select"
+                      value={selectedRegion}
+                      label="Age"
+                      onChange={handleRegionSelection}
+                    >
+                      {getMenuItems()}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth style={{ margin: 20, width: 360 }}>
+                    <InputLabel id="activity-select-label">Activity</InputLabel>
+                    <Select
+                      labelId="activity-select-label"
+                      id="activity-select"
+                      multiple
+                      value={selectedActivities}
+                      onChange={handleActivitySelection}
+                      input={
+                        <OutlinedInput
+                          id="select-multiple-chip"
+                          label="activity-select-label"
+                        />
+                      }
+                      renderValue={(selected) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      {activities.map((activity) => (
+                        <MenuItem key={activity} value={activity}>
+                          {activity}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              ) : (
+                <PreferencesComponent />
+              )}
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper
+              elevation={24}
+              style={{ margin: 20, width: 700, height: 700 }}
+            >
+              <ToggleButtonGroup
+                value={selectedMap}
+                exclusive
+                onChange={handleMapSelection}
+                style={{ width: 500, height: 25, margin: "auto", padding: 20 }}
+              >
+                <ToggleButton value="map1" aria-label="left aligned">
+                  <p>Map 1</p>
+                </ToggleButton>
+                <ToggleButton value="map2" aria-label="centered">
+                  <p>Map 2</p>
+                </ToggleButton>
+              </ToggleButtonGroup>
+              {selectedMap == "map1" && (
+                <MapComponent
+                  geojson={chicago_geojson}
+                  initialViewState={{
+                    longitude: -87.63238,
+                    latitude: 41.84372,
+                    zoom: 9,
+                  }}
+                ></MapComponent>
+              )}
+              {selectedMap == "map2" && (
+                <MapComponent
+                  geojson={atlanta_geojson}
+                  initialViewState={{
+                    longitude: -84.376656,
+                    latitude: 33.749542,
+                    zoom: 10,
+                  }}
+                ></MapComponent>
+              )}
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
     </div>
   );
 }
