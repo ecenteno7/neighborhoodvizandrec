@@ -5,6 +5,9 @@ class MapComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      initGeoJson: this.props.geojson.features,
+      selectedNeighborhoods: [],
+      selectedNeighborhoodsGeoJson: {},
       res: {
         neighborhoods: [
           {
@@ -32,19 +35,61 @@ class MapComponent extends Component {
         ],
       },
     };
-    let selectedNeighborhoods = [];
   }
 
   componentDidMount(prevProps) {
     const prefNeighborhoods = this.state.res.neighborhoods.map((interest) => {
-      return interest.name;
+      return interest.key;
     });
+
+    console.log(prefNeighborhoods)
+    
+    if (this.state.selectedNeighborhoods.length == 3) {
+      return;
+    }
+    
     this.props.geojson.features.map((feature) => {
       if (prefNeighborhoods.includes(feature.properties.name)) {
-        this.state.selectedNeighborhoods.push(feature);
+        this.setState({
+          selectedNeighborhoods: this.state.selectedNeighborhoods.push(feature)
+        });
+        
       }
     });
-    console.log(this.state.selectedNeighborhoods);
+
+    // this.props.geojson.features.map((feature) => {
+    //   console.log(this.state.initGeoJson.filter((initFeature) => { 
+    //     // console.log(initFeature.properties.name)
+    //     return initFeature.properties.name != feature.properties.name; 
+    //   }))
+    //   let filteredArr = this.state.initGeoJson.filter((initFeature) => { 
+    //     // console.log(initFeature.properties.name)
+    //     return initFeature.properties.name != feature.properties.name; 
+    //   })
+      
+    //   this.setState({
+    //     initGeoJson: filteredArr
+    //   });
+
+
+    //   console.log(filteredArr)
+    // })
+
+    
+    
+    this.setState({
+      renderInitGeoJson: {
+        type: "FeatureCollection",
+        features: this.state.initGeoJson
+      }
+    })
+    this.setState({
+      selectedNeighborhoodsGeoJson: {
+        type: "FeatureCollection",
+        features: this.state.selectedNeighborhoods
+      }
+    })
+    console.log(this.state.selectedNeighborhoodsGeoJson);
   }
 
   layerStyle = {
@@ -56,6 +101,15 @@ class MapComponent extends Component {
     },
   };
 
+  selectedLayerStyle = {
+    id: "selected",
+    type: "fill",
+    paint: {
+      "fill-color": "blue",
+      "fill-opacity": 0.6,
+    },
+  };
+
   render() {
     return (
       <Map
@@ -64,9 +118,13 @@ class MapComponent extends Component {
         style={{ width: 600, height: 400, margin: "auto", padding: 20 }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
-        <Source id="my-data" type="geojson" data={this.props.geojson}>
-          <Layer {...this.layerStyle} />
+        <Source id="my-data-selected" type="geojson" data={this.state.selectedNeighborhoodsGeoJson}>
+          <Layer key={"selected"} {...this.selectedLayerStyle} />
         </Source>
+        <Source id="my-data" type="geojson" data={this.state.renderInitGeoJson}>
+          <Layer key={"rest"} {...this.layerStyle} />
+        </Source>
+        
       </Map>
     );
   }

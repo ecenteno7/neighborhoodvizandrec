@@ -116,21 +116,22 @@ function App() {
         </ToggleButtonGroup>
         {selectedMap == "map1" && (
           <MapComponent
-            geojson={atlanta_geojson}
-            initialViewState={{
-              longitude: -84.376656,
-              latitude: 33.749542,
-              zoom: 10,
-            }}
-          ></MapComponent>
-        )}
-        {selectedMap == "map2" && (
-          <MapComponent
             geojson={chicago_geojson}
             initialViewState={{
               longitude: -87.63238,
               latitude: 41.84372,
               zoom: 9,
+            }}
+          ></MapComponent>
+          
+        )}
+        {selectedMap == "map2" && (
+          <MapComponent
+            geojson={atlanta_geojson}
+            initialViewState={{
+              longitude: -84.376656,
+              latitude: 33.749542,
+              zoom: 10,
             }}
           ></MapComponent>
         )}
