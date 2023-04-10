@@ -4,10 +4,10 @@ from shapely.geometry import Point, shape
 
 def find_neighborhood(lat, lon, city):
 
-    if city in ['nyc', 'atlanta', 'chicago']:
+    if city in ['nyc', 'atlanta', 'chicago', 'washingtondc']:
         neighborhood = 'NONE FOUND'
 
-        with open("flask/neighborhoods/"+city+'.geojson') as f:
+        with open("neighborhoods/"+city+'.geojson') as f:
             geojson_data = json.load(f)
 
         point = Point(lon, lat)  # replace with your actual lat/lon values
@@ -25,7 +25,7 @@ def find_neighborhood(lat, lon, city):
         return "CITY NOT FOUND"
     
 def list_neighborhoods(city):
-    with open("flask/neighborhoods/"+city+'.geojson') as f:
+    with open("neighborhoods/"+city+'.geojson') as f:
         geojson_data = json.load(f)
 
     neighborhoods_list = []
@@ -40,7 +40,7 @@ def list_neighborhoods(city):
 # print(find_neighborhood(41.708209818630316, -87.62425062144386, 'chicago'))
 # print(find_neighborhood(33.73756864954531, -84.42450107648365, 'atlanta'))
 
-nyc = list_neighborhoods('nyc')
-print(len(nyc))
+# nyc = list_neighborhoods('nyc')
+# print(len(nyc))
 # print(list_neighborhoods('chicago'))
 # print(list_neighborhoods('atlanta'))
