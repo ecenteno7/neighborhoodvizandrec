@@ -1,6 +1,7 @@
 import json
 from shapely.geometry import Point, shape
 
+
 def find_neighborhood(lat, lon, city):
 
     if city in ['nyc', 'atlanta', 'chicago']:
@@ -34,11 +35,12 @@ def list_neighborhoods(city):
 
     return neighborhoods_list
 
-    
-print(find_neighborhood(40.69407098028509, -73.99551310312538, 'nyc'))
-print(find_neighborhood(41.708209818630316, -87.62425062144386, 'chicago'))
-print(find_neighborhood(33.73756864954531, -84.42450107648365, 'atlanta'))
 
-# print(list_neighborhoods('nyc'))
+# print(find_neighborhood(40.69407098028509, -73.99551310312538, 'nyc'))
+# print(find_neighborhood(41.708209818630316, -87.62425062144386, 'chicago'))
+# print(find_neighborhood(33.73756864954531, -84.42450107648365, 'atlanta'))
+
+nyc = list_neighborhoods('nyc')
+print(len(nyc))
 # print(list_neighborhoods('chicago'))
 # print(list_neighborhoods('atlanta'))
