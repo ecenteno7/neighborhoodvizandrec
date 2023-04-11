@@ -12,10 +12,11 @@ engine = db.create_engine(f"postgresql://{username}:{password}@cse6242-useast1-f
 
 def return_trips_between_times(start_time, end_time, city):
     df = pd.read_sql(f"""
-            select * from public.{city}
+            select "DESTINATION_BLOCK_LAT", "DESTINATION_BLOCK_LONG", count(*) as dropoff_count
+            from public.{city}
             where "ORIGINDATETIME_TR"::TIME > '{start_time}' and "ORIGINDATETIME_TR"::TIME <= '{end_time}'
+            group by "DESTINATION_BLOCK_LAT", "DESTINATION_BLOCK_LONG"
         """, engine)
-
     return df
 
 
@@ -38,3 +39,29 @@ if __name__ == "__main__":
     late_am_dc_trips_w_neighbhoods = return_trips_in_neighbhorhood(late_am_dc_trips, user_preferences['city'], user_preferences['neighborhood'])
 
     print(late_am_dc_trips_w_neighbhoods)
+
+    # place_types_testing2 = ["bar", "museum", "night_club", "restaurant",
+    #                         "store", "supermarket", "tourist_attraction", "transit_station"]
+    
+    # with open('../googleMapsApikey.txt') as f:
+    #     api_key = f.readline()
+    #     f.close()
+
+    # gmaps = googlemaps.Client(key=api_key)
+
+    # trip = late_am_dc_trips_w_neighbhoods.sample(1)
+    # lat = trip['DESTINATION_BLOCK_LAT']
+    # long = trip['DESTINATION_BLOCK_LONG']
+    
+    # counts = {}
+    # for type in place_types_testing2:
+    #     counts[type] = 0
+
+    # for search_type in place_types_testing2:
+    #     # find places_nearby in 1/4 mile radius
+    #     search_results = gmaps.places_nearby(
+    #         location=(lat, long), radius=0.25, type=search_type)
+    #     counts[search_type] = len(search_results['results'])
+
+    # print(trip)
+    # print(counts)
