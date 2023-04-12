@@ -1,5 +1,6 @@
 import json
 from shapely.geometry import Point, shape
+import csv
 
 
 def find_neighborhood(lat, lon, city):
@@ -25,13 +26,19 @@ def find_neighborhood(lat, lon, city):
         return "CITY NOT FOUND"
     
 def list_neighborhoods(city):
-    with open("neighborhoods/"+city+'.geojson') as f:
+    with open("flask/neighborhoods/"+city+'.geojson') as f:
         geojson_data = json.load(f)
 
     neighborhoods_list = []
     for feature in geojson_data['features']:
         name = feature['properties']['name']
         neighborhoods_list.append(name)
+
+    with open("flask/neighborhoods/"+city+'_neighborhood_list.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Neighborhood'])
+        for neighborhood in neighborhoods_list:
+            writer.writerow([neighborhood])
 
     return neighborhoods_list
 
