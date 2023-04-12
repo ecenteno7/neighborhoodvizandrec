@@ -15,7 +15,7 @@ with open('../mapquestAPIkey.txt') as f:
 # remove_poi_duplicates("flask/neighborhoods/washingtondc_places_of_interest.csv")
 
 # id_poi_with_neighborhood("flask/neighborhoods/chicago_places_of_interest.csv", "chicago")
-id_poi_with_neighborhood("flask/neighborhoods/chicago_places_of_interest.csv", "washingtondc")
+# id_poi_with_neighborhood("flask/neighborhoods/chicago_places_of_interest.csv", "washingtondc")
 
 # tally_occurrences("flask/neighborhoods/chicago_poi_with_neighborhood.csv", "chicago")
-tally_occurrences("flask/neighborhoods/chicago_poi_with_neighborhood.csv", "washingtondc")
+# tally_occurrences("flask/neighborhoods/chicago_poi_with_neighborhood.csv", "washingtondc")
