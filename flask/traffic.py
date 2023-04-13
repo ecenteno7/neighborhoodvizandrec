@@ -6,6 +6,7 @@ from config import *
 from shapely.geometry import Point, shape, Polygon, MultiPolygon
 import sqlalchemy as db
 import pandas as pd
+import requests
 
 username = "postgres"
 password = "bobbydodd"
@@ -36,7 +37,9 @@ def return_trips_in_neighbhorhood(all_trips, city, neighbhorhood):
 
 
 def refresh_knn_dataset(user_preferences):
-    api_key = "INSERT API KEY HERE"
+    api_key = "AIzaSyDj-YsE26-fgR4eVTyqb-KlmCQ0mXRN8Gs"
+
+    print(f"processing user preferences: {user_preferences}")
 
     late_am_dc_trips = return_trips_between_times(
         user_preferences['start_time'], user_preferences['end_time'], user_preferences['city'])
@@ -47,25 +50,80 @@ def refresh_knn_dataset(user_preferences):
 
     entry = {}
 
-    for entry_type in entry_types:
-        entry[entry_type] = 0
+    for category in poi_categories:
+        entry[str(category)] = 0
 
     count = 0
 
     for index, row in late_am_dc_trips_w_neighbhoods.iterrows():
         print(
             f'completed {count} of {late_am_dc_trips_w_neighbhoods.shape[0]}')
-        if count == 2:
+        if count == restrict_traffic_trips:
             break
-        for entry_type in entry_types:
-            print(entry_type)
-            entry[entry_type] = entry[entry_type] + maps.get_gmaps_info(
-                api_key, row['DESTINATION_BLOCK_LAT'], row['DESTINATION_BLOCK_LONG'], search_types=[entry_type], debug=True) * row['dropoff_count']
+        center_point = "{},{}".format(row['DESTINATION_BLOCK_LAT'], row['DESTINATION_BLOCK_LONG'])
+        poi_df = tag_poi_in_at_location_mapquest(api_key_mq, center_point)
+
+        if poi_df is None:
+            continue
+        
+        for idx, poi in poi_df.iterrows():
+            print(poi['group_sic_code_name_ext'], poi['group_sic_code'])
+            if poi['group_sic_code'] != '' and int(poi['group_sic_code']) in poi_categories:
+                print(row['dropoff_count'])
+                entry[poi['group_sic_code']] = entry[poi['group_sic_code']] + row['dropoff_count']
+            
+            # Using Google Maps Places API
+            # entry[entry_type] = entry[entry_type] + maps.get_gmaps_info(
+            #     api_key, row['DESTINATION_BLOCK_LAT'], row['DESTINATION_BLOCK_LONG'], search_types=[entry_type], debug=True) * row['dropoff_count']
+        
         count += 1
+
+    print(entry)
 
     return entry
 
 
+def tag_poi_in_at_location_mapquest(api, location):
+    url = "http://www.mapquestapi.com/search/v2/radius"
+
+    radius = 0.300
+
+    params = {
+        "key": api,
+        "origin": location,
+        "radius": radius,
+        "units": "k",
+        "ambiguities": "ignore",
+        "outFormat": "json",
+        "maxMatches": "1000"
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        records = []
+        try: 
+            for result in response.json()['searchResults']:
+                records.append(result['fields'])
+            print(pd.DataFrame(records))
+            res = pd.DataFrame(records)
+            print(res[['group_sic_code_name_ext', 'name']])
+            return res
+        except Exception as e:
+            print(e)
+            return None
+    else:
+        print("Error:", response.status_code, response.text)
+        return None
+
+
+
+
 if __name__ == "__main__":
-    refresh_knn_dataset()
+    refresh_knn_dataset(user_preferences = {
+        "city": "washingtondc",
+        "neighborhood": "Columbia Heights",
+        "start_time": "05:59",
+        "end_time": "11:59"
+    })
 
