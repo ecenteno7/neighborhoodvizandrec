@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
 export default function PreferencesComponent() {
@@ -31,7 +30,7 @@ export default function PreferencesComponent() {
     ],
   };
 
-  const [preferences, setPreferences] = useState(res);
+  // const [preferences, setPreferences] = useState(res);
 
   const renderResults = () => {
     return res.neighborhoods.map((pointOfInterest) => {
