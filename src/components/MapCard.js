@@ -4,11 +4,11 @@ import MapComponent from "./MapComponent";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Paper from "@mui/material/Paper";
-import atlanta_geojson from "../resources/atlanta.json";
+import washingtondc_geojson from "../resources/washingtondc.json";
 import chicago_geojson from "../resources/chicago.json";
 import Grid from "@mui/material/Grid";
 
-export default function MapCard({ mode, setMode }) {
+export default function MapCard({ mode, setMode, res }) {
 
     const handleMapSelection = (event, newSelectedMap) => {
         console.log(newSelectedMap)
@@ -22,7 +22,7 @@ export default function MapCard({ mode, setMode }) {
                     elevation={24}
                     style={{ margin: 20, width: 700, height: 700 }}
                 >
-                    <ToggleButtonGroup
+                    {/* <ToggleButtonGroup
                         value={mode}
                         exclusive
                         onChange={handleMapSelection}
@@ -34,8 +34,8 @@ export default function MapCard({ mode, setMode }) {
                         <ToggleButton value="map2" aria-label="centered">
                             <p>Map 2</p>
                         </ToggleButton>
-                    </ToggleButtonGroup>
-                    {mode == "map1" && (
+                    </ToggleButtonGroup> */}
+                    {res == null && (
                         <MapComponent
                             geojson={chicago_geojson}
                             initialViewState={{
@@ -43,16 +43,18 @@ export default function MapCard({ mode, setMode }) {
                                 latitude: 41.84372,
                                 zoom: 9,
                             }}
+                            res={res}
                         ></MapComponent>
                     )}
-                    {mode == "map2" && (
+                    {res != null && (
                         <MapComponent
-                            geojson={atlanta_geojson}
+                            geojson={washingtondc_geojson}
                             initialViewState={{
-                                longitude: -84.376656,
-                                latitude: 33.749542,
+                                longitude: -77.036600,
+                                latitude: 38.907018, 
                                 zoom: 10,
                             }}
+                            res={res}
                         ></MapComponent>
                     )}
                 </Paper>

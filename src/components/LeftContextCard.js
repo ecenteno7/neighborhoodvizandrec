@@ -4,7 +4,7 @@ import PreferencesComponent from "./PreferencesComponent";
 import Grid from "@mui/material/Grid";
 import InputSelectorComponent from "./InputSelectorComponent";
 
-export default function LeftContextCard({ mode }) {
+export default function LeftContextCard({ mode, setMode, res, setResult }) {
 
     return (
         <>
@@ -20,8 +20,8 @@ export default function LeftContextCard({ mode }) {
                     }}
                 >
                     {(mode == "map1" ? 
-                        <InputSelectorComponent></InputSelectorComponent>
-                        : <PreferencesComponent></PreferencesComponent>)}
+                        <InputSelectorComponent setMode={setMode} setResult={setResult}></InputSelectorComponent>
+                        : <PreferencesComponent res={res}></PreferencesComponent>)}
                 </Paper>
             </Grid>
         </>

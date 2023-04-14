@@ -1,4 +1,4 @@
-api_key_mq = "crB3pB1qLTbKIjoGR1jz7CGt0yTeNc5E"
+api_key_mq = "INSERT YOUR API KEY HERE"
 
 neighborhoods_dc = [
     "Takoma Park",
