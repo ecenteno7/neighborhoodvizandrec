@@ -37,7 +37,7 @@ def return_trips_in_neighbhorhood(all_trips, city, neighbhorhood):
 
 
 def refresh_knn_dataset(user_preferences):
-    api_key = "AIzaSyDj-YsE26-fgR4eVTyqb-KlmCQ0mXRN8Gs"
+    api_key_mq = "hn3cnNt2TJoLZTi2yNUY3oxe2LK0pE0w"
 
     print(f"processing user preferences: {user_preferences}")
 
@@ -67,9 +67,9 @@ def refresh_knn_dataset(user_preferences):
             continue
         
         for idx, poi in poi_df.iterrows():
-            print(poi['group_sic_code_name_ext'], poi['group_sic_code'])
+            # print(poi['group_sic_code_name_ext'], poi['group_sic_code'])
             if poi['group_sic_code'] != '' and int(poi['group_sic_code']) in poi_categories:
-                print(row['dropoff_count'])
+                # print(row['dropoff_count'])
                 entry[poi['group_sic_code']] = entry[poi['group_sic_code']] + row['dropoff_count']
             
             # Using Google Maps Places API

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Map, { Source, Layer } from "react-map-gl";
+import React, { Component, useMemo} from "react";
+import InteractiveMap, { Source, Layer } from "react-map-gl";
 
 class MapComponent extends Component {
   constructor(props) {
@@ -72,11 +72,20 @@ class MapComponent extends Component {
   }
 
   layerStyle = {
-    id: "point",
+    id: "neighborhoods",
     type: "fill",
     paint: {
       "fill-color": "red",
       "fill-opacity": 0.2,
+    },
+  };
+
+  hoverLayerStyle = {
+    id: "hover",
+    type: "fill",
+    paint: {
+      "fill-color": "green",
+      "fill-opacity": 0.6,
     },
   };
 
@@ -89,25 +98,33 @@ class MapComponent extends Component {
     },
   };
 
+  _onClick = event => {
+    const {
+      features,
+      // srcEvent: { offsetX, offsetY }
+    } = event;
+    // console.log(features[0].properties.name);
+    this.props.clickedNeighborhood(features[0].properties.name);
+  };
+
   render() {
     return (
-      <Map
+      <InteractiveMap
         mapboxAccessToken={process.env.REACT_APP_API_KEY}
         initialViewState={this.props.initialViewState}
         style={{ width: 600, height: 400, margin: "auto", padding: 20 }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
+        interactiveLayerIds={["neighborhoods"]}
+        onClick={this._onClick}
       >
-        <Source
-          id="my-data-selected"
-          type="geojson"
-          data={this.state.selectedNeighborhoodsGeoJson}
-        >
-          <Layer key={"selected"} {...this.selectedLayerStyle} />
-        </Source>
         <Source id="my-data" type="geojson" data={this.state.renderInitGeoJson}>
           <Layer key={"rest"} {...this.layerStyle} />
+          <layer key={"hover"} {...this.hoverLayerStyle} filter={this.hoveredNeighborhood}/>
         </Source>
-      </Map>
+        <Source id="my-data-selected" type="geojson" data={this.state.selectedNeighborhoodsGeoJson}>
+          <Layer key={"selected"} {...this.selectedLayerStyle} />
+        </Source>
+      </InteractiveMap>
     );
   }
 }

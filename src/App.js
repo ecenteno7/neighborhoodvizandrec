@@ -12,24 +12,27 @@ import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import atlanta_geojson from "./resources/atlanta.json";
 import chicago_geojson from "./resources/chicago.json";
+import washington_geojson from "./resources/washington.json";
 import PreferencesComponent from "./components/PreferencesComponent";
 
 import Grid from "@mui/material/Grid";
+import { PieChartComponent } from "./components/PieChartComponent";
 
 function App() {
   const [selectedMap, setSelectedMap] = React.useState("map1");
   const [selectedRegion, setSelectedRegion] = React.useState("");
   const [selectedActivities, setSelectedActivities] = React.useState([]);
+  const [clickedNeighborhood, setClickedNeighborhood] = React.useState("Capitol Hill");
 
   const activities = ["Biking", "Hiking", "Running", "Swimming", "Walking"];
 
   function getRegions() {
-    console.log(atlanta_geojson);
+    // console.log(atlanta_geojson);
     var regions = [];
     var regions = atlanta_geojson.features.map((feature) => {
       return feature.properties.name;
     });
-    console.log(regions);
+    // console.log(regions);
     return regions;
   }
 
@@ -56,6 +59,10 @@ function App() {
     } = event;
     setSelectedActivities(typeof value === "string" ? value.split(",") : value);
   };
+
+  function foo(neighborhood) {
+    console.log(neighborhood);
+  }
 
   return (
     <div
@@ -176,6 +183,7 @@ function App() {
               </ToggleButtonGroup>
               {selectedMap == "map1" && (
                 <MapComponent
+                  clickedNeighborhood={setClickedNeighborhood}
                   geojson={chicago_geojson}
                   initialViewState={{
                     longitude: -87.63238,
@@ -186,14 +194,23 @@ function App() {
               )}
               {selectedMap == "map2" && (
                 <MapComponent
-                  geojson={atlanta_geojson}
+                  clickedNeighborhood={setClickedNeighborhood}
+                  geojson={washington_geojson}
                   initialViewState={{
-                    longitude: -84.376656,
-                    latitude: 33.749542,
+                    longitude: -77.040056,
+                    latitude: 38.90227,
                     zoom: 10,
                   }}
                 ></MapComponent>
               )}
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper
+              elevation={24}
+              style={{ margin: 20, width: 700, height: 700 }}
+            >
+              <PieChartComponent neighborhood={clickedNeighborhood}></PieChartComponent>
             </Paper>
           </Grid>
         </Grid>

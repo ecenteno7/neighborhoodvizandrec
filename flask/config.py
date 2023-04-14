@@ -1,4 +1,4 @@
-api_key_mq = "INSERT YOUR API KEY HERE"
+api_key_mq = "hn3cnNt2TJoLZTi2yNUY3oxe2LK0pE0w"
 
 neighborhoods_dc = [
     "Columbia Heights",

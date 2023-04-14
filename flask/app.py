@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request, Response
 from config import *
 import traffic
+import pandas as pd
 
 import csv
 
@@ -42,5 +43,15 @@ def backend():
         'message': 'Dataset refreshed!',
         'body': res
     }
+
+@app.route('/get-pie-chart-data')
+def get_pie_chart_data():
+    neighborhood = request.args.get('neighborhood')
+    df = pd.read_csv('knn_dataset.csv')
+    df = df[df.neighborhood == neighborhood]
+    df = df.drop(['neighborhood'], axis=1)
+    response = Response(df.to_json())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 app.run(host='0.0.0.0', port=81)
