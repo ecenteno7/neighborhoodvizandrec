@@ -105,6 +105,13 @@ def get_pie_chart_data():
     df = pd.read_csv('knn_dataset.csv')
     df = df[df.neighborhood == neighborhood]
     df = df.drop(['neighborhood'], axis=1)
+    df = df.T
+    column = df.columns.values.tolist()[0]
+    print(df)
+    print(column)
+    df = df.sort_values(by=[column], ascending=False)
+    df = df.head(5)
+    df = df.T
     response = Response(df.to_json())
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
