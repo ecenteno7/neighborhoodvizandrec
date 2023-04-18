@@ -4,7 +4,8 @@ import traffic
 import pandas as pd
 from flask import request
 from knn import run_knn
-
+import maps
+import config
 import csv
 
 from flask_cors import CORS, cross_origin
@@ -102,18 +103,34 @@ def backend():
 @app.route('/get-pie-chart-data')
 def get_pie_chart_data():
     neighborhood = request.args.get('neighborhood')
-    df = pd.read_csv('knn_dataset.csv')
-    df = df[df.neighborhood == neighborhood]
-    df = df.drop(['neighborhood'], axis=1)
-    df = df.T
-    column = df.columns.values.tolist()[0]
+    df = pd.read_csv('./neighborhoods/washingtondc_neighborhood_category_counts_transpose.csv')
+    df = df[df.Neighborhood == neighborhood]
+    df = df.drop(['Neighborhood'], axis=1).T
     print(df)
-    print(column)
-    df = df.sort_values(by=[column], ascending=False)
-    df = df.head(5)
-    df = df.T
+    column = df.columns.values.tolist()[0]
+    df = df.sort_values(by=[column], ascending=False).head(5).T
     response = Response(df.to_json())
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+@app.route('/get-popular-places')
+def get_popular_places():
+    # "https://maps.googleapis.com/maps/api/place/textsearch/json?query=coffee+shop&location=35.792491,-78.653009&radius=2000&region=us&type=cafe,bakery&key=MY_API_KEY"
+    neighborhood = request.args.get('neighborhood')
+    query = request.args.get('query')
+    type = request.args.get('type')
+    res = maps.get_popular_places(neighborhood, query, type, "AIzaSyDax4lu6m_obzXgAcO6ZB3W7yX-Locw0BI")    
+    return {
+        'message': 'Popular places fetched!',
+        'body': res
+    }
+
+@app.route('/get_poi_categories')
+def get_poi_categories():
+    return {
+        'message': 'Places of interest fetched!',
+        'body': config.poi_categories
+    }
+    
 
 app.run(host='0.0.0.0', port=81)

@@ -3,6 +3,8 @@ import googlemaps
 import json
 import neighborhood_methods as nm
 from shapely.geometry import Point, shape, Polygon, MultiPolygon
+import requests
+import config
 
 
 def get_gmaps_info(apikey, lat, lon, search_types=["restaurant", "cafe", "meal_delivery", "meal_takeaway"], debug=False):
@@ -61,6 +63,36 @@ def get_gmaps_info(apikey, lat, lon, search_types=["restaurant", "cafe", "meal_d
 # print(api_key)
 # results = get_gmaps_info(api_key, 40.75834719172825, -73.98543110503996, "nyc", "flask/neighborhoods/nyc.geojson")
 
+def get_feature_by_name(neighborhood_name):
+    with open(".//neighborhoods/washingtondc.geojson") as f:
+        neighborhoods = json.load(f)
+        for feature in neighborhoods['features']:
+            if feature.get('properties').get('name') == neighborhood_name:
+                return feature
+
+def get_popular_places(neighborhood, query, type, api_key):
+    
+    feature = get_feature_by_name(neighborhood)
+    if feature:
+        n_polygon = shape(feature["geometry"])
+        n_centroid = n_polygon.centroid
+    
+    if n_centroid:
+        lat = n_centroid.y
+        lon = n_centroid.x
+
+        type = config.poi_map[type]
+
+        # query = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?query={query}&location={lat},{lon}&radius=500&key={api_key}"
+        query = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?type={type}&location={lat},{lon}&radius=500&key={api_key}"
+        print(query)
+        search_results = requests.get(query).json()
+        search_results = search_results['results']
+        print(search_results)
+        search_results = [result for result in search_results if result.get('rating')]
+        search_results = max(search_results, key=lambda x: x['rating'])
+
+        return search_results
 
 def characterize_city(city, api_key):
     # with open('../googleMapsApikey.txt') as f:

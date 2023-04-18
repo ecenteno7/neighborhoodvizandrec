@@ -1,9 +1,5 @@
-import googlemaps
-import json
 import neighborhood_methods as nm
-import maps
 from config import *
-from shapely.geometry import Point, shape, Polygon, MultiPolygon
 import sqlalchemy as db
 import pandas as pd
 import requests
