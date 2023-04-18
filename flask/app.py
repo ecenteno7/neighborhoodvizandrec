@@ -1,23 +1,79 @@
 from flask import Flask
 from config import *
 import traffic
+from flask import request
+from knn import run_knn
 
 import csv
+
+from flask_cors import CORS, cross_origin
 
 
 app = Flask(__name__)
 
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-def convert_list_to_csv(list):
+
+def convert_list_to_csv(list, fn='knn_dataset.csv'):
     keys = list[0].keys()
 
-    with open('knn_dataset.csv', 'w', newline='') as output_file:
+    with open(fn, 'w', newline='') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(list)
 
 
-@app.route('/refresh-knn-dataset')
+@app.route('/get-knn-result', methods=['POST'])
+@cross_origin()
+def get_knn_result():
+    print(request.json['region'])
+    user_preferences = {
+        "city": "chicago",
+        "neighborhood": request.json['region'],
+        "start_time": request.json['startTime'],
+        "end_time": request.json['endTime']
+    }
+
+    res = []
+
+    neighborhood_data = traffic.refresh_knn_dataset(user_preferences)
+    res.append(neighborhood_data)
+    print(res)
+
+    convert_list_to_csv(res, fn='knn_input.csv')
+
+    res = calculate_knn('knn_input.csv', 'knn_dataset.csv',
+                        user_preferences['city'])
+
+    neighborhood_res = {
+        "neighborhoods": []
+    }
+
+    for neighborhood in res:
+        neighborhood_res['neighborhoods'].append({
+            'key': neighborhood,
+            'description': "Lorem ipsum dolor",
+            'pointsOfInterest': [
+                "Ormsby's",
+                "Puttshack",
+                "Fire Maker Brewing Company",
+            ],
+        })
+
+    return {
+        'message': 'Input data received! KNN Calculated',
+        'body': neighborhood_res
+    }
+
+
+def calculate_knn(input_file, knn_data_file, city):
+    res = run_knn(input_file, knn_data_file)
+
+    return res
+
+
+@app.route('/refresh-knn-dataset', methods=['GET'])
 def backend():
     user_preferences = {
         "city": "washingtondc",
@@ -41,5 +97,6 @@ def backend():
         'message': 'Dataset refreshed!',
         'body': res
     }
+
 
 app.run(host='0.0.0.0', port=81)
