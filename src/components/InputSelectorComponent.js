@@ -85,6 +85,7 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
     const handleSubmit = (event) => {
         setResult('pending')
+        console.log(process.env.REACT_APP_API_KEY)
         const req = {
             region: selectedRegion,
             activities: selectedActivities,
@@ -102,7 +103,7 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
         console.log(req)
 
-        fetch('http://localhost:81/get-knn-result', requestOptions)
+        fetch('http://100.25.150.129:81/get-knn-result', requestOptions)
             .then(response => response.json())
             .then(data => {console.log(data); setResult(data.body)});
 
