@@ -3,7 +3,8 @@ import googlemaps
 import json
 import neighborhood_methods as nm
 from shapely.geometry import Point, shape, Polygon, MultiPolygon
-
+import config
+import requests
 
 def get_gmaps_info(apikey, lat, lon, search_types=["restaurant", "cafe", "meal_delivery", "meal_takeaway"], debug=False):
     gmaps = googlemaps.Client(key=apikey)
@@ -34,7 +35,7 @@ def get_gmaps_info(apikey, lat, lon, search_types=["restaurant", "cafe", "meal_d
     #     print(nm.find_neighborhood(place['geometry']['location']['lat'], place['geometry']['location']['lng'], city))
     #     print()
 
-    if debug:
+    if False:
         print(f"{'/'.join(search_types)} Count:",
             len(restaurant_results['results']))
     # print(restaurant_results)
@@ -91,7 +92,7 @@ def characterize_city(city, api_key):
         n_centroid = n_polygon.centroid
         n_details['name'] = {
             'name': feature['properties']['name'], "counts": {}}
-        print(n_details['name'])
+        # print(n_details['name'])
         max_distance = 0
 
         if isinstance(n_polygon, MultiPolygon):
@@ -130,6 +131,45 @@ def characterize_city(city, api_key):
     # return dictionary with integer counts of each place_type
     return n_details
 
+def get_popular_places(neighborhood, types):
+    print("neighborhood: ", neighborhood)
+    popular_places = []
+    for type in types:
+        place = get_popular_place(neighborhood, type)
+        if place != None:
+            popular_places.append(place)
+    print("popular places: ", popular_places)
+    return popular_places
+
+def get_feature_by_name(neighborhood_name):
+    with open(".//neighborhoods/washingtondc.geojson") as f:
+        neighborhoods = json.load(f)
+        for feature in neighborhoods['features']:
+            if feature.get('properties').get('name') == neighborhood_name:
+                return feature
+
+def get_popular_place(neighborhood, type):
+    
+    feature = get_feature_by_name(neighborhood)
+    if feature:
+        n_polygon = shape(feature["geometry"])
+        n_centroid = n_polygon.centroid
+    
+        if n_centroid:
+            lat = n_centroid.y
+            lon = n_centroid.x
+
+            type = config.poi_map[type]
+            api_key = "INSERT GOOGLE API KEY HERE"
+            query = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?type={type}&location={lat},{lon}&radius=500&key={api_key}"
+            # print(query)
+            search_results = requests.get(query).json()
+            search_results = search_results['results']
+            search_results = [result for result in search_results if result.get('rating')]
+            search_result = max(search_results, key=lambda x: x['rating'], default=0)
+
+            if search_result != 0:
+                return search_result.get('name')
 
 # nyc_details = characterize_city("nyc")
 # print(nyc_details.keys())

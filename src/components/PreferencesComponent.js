@@ -1,6 +1,7 @@
 import React from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import PieChartComponent from "./PieChartComponent";
 
 export default function PreferencesComponent({res}) {
   // const res = {
@@ -53,6 +54,16 @@ export default function PreferencesComponent({res}) {
                 return <li>{feature}</li>;
               })}
             </div>
+            <PieChartComponent 
+                style={{
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  paddingTop: 0,
+                  paddingBottom: 10,
+                }}
+                neighborhood={pointOfInterest.key}
+              >
+              </PieChartComponent>
           </Paper>
         </Grid>
       );
