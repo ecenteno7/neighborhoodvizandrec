@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 from config import *
 import traffic
 from flask import request
@@ -61,10 +61,15 @@ def get_knn_result():
             ],
         })
 
-    return {
+    res = {
         'message': 'Input data received! KNN Calculated',
         'body': neighborhood_res
     }
+
+    response = Response(res)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return 
 
 
 def calculate_knn(input_file, knn_data_file, city):
