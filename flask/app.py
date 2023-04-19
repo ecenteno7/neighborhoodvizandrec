@@ -37,25 +37,6 @@ def bgrd_proc(user_preferences):
     
 download_thread = None
 
-@app.route('/get-knn-result', methods=['POST'])
-# @cross_origin()
-def get_knn_result():
-    global download_thread
-    print(request.json['region'])
-    user_preferences = {
-        "city": "chicago",
-        "neighborhood": request.json['region'],
-        "start_time": request.json['startTime'],
-        "end_time": request.json['endTime']
-    }
-
-    download_thread = threading.Thread(target=bgrd_proc, name="running_proc", args=(user_preferences, ))
-    download_thread.start()
-
-    return {
-        'message': 'Input data received! KNN calculating...',
-    }
-
 
 @app.route('/poll-knn-proc', methods=['POST'])
 # @cross_origin()
