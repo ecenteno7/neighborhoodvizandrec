@@ -35,6 +35,7 @@ def bgrd_proc(user_preferences):
 
     convert_list_to_csv(res, fn='knn_input.csv')
 
+<<<<<<< HEAD
     res = calculate_knn('knn_input.csv', 'knn_dataset.csv',
                         user_preferences['city'])
     # res = ["Columbia Heights", "Logan Square", "Wicker Park"]
@@ -62,14 +63,16 @@ def bgrd_proc(user_preferences):
     # response = Response(res)
     # response.headers.add('Access-Control-Allow-Origin', '*')
 
+=======
+>>>>>>> efcd507 (Added poll check)
     return res
     
-
+download_thread = None
 
 @app.route('/get-knn-result', methods=['POST'])
 # @cross_origin()
 def get_knn_result():
-    
+    global download_thread
     print(request.json['region'])
     user_preferences = {
         "city": "chicago",
@@ -85,7 +88,41 @@ def get_knn_result():
         'message': 'Input data received! KNN calculating...',
     }
 
-    
+
+@app.route('/poll-knn-proc', methods=['GET'])
+# @cross_origin()
+def poll_knn_proc():
+    global download_thread
+    res = {
+        'message': 'KNN still calculating...',
+    }
+
+    if not download_thread.is_alive():
+        res = calculate_knn('knn_input.csv', 'knn_dataset.csv',
+                        'chicago')
+
+        neighborhood_res = {
+            "neighborhoods": []
+        }
+
+        for neighborhood in res:
+            neighborhood_res['neighborhoods'].append({
+                'key': neighborhood,
+                'description': "Lorem ipsum dolor",
+                'pointsOfInterest': [
+                    "Ormsby's",
+                    "Puttshack",
+                    "Fire Maker Brewing Company",
+                ],
+            })
+
+
+        res = {
+            'message': 'KNN Calculated!',
+            'body': neighborhood_res
+        }
+
+    return res
 
 
 def calculate_knn(input_file, knn_data_file, city):
