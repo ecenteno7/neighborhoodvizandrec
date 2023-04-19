@@ -78,7 +78,7 @@ def get_knn_result():
         "end_time": request.json['endTime']
     }
 
-    download_thread = threading.Thread(target=bgrd_proc, name="running_proc", args=user_preferences)
+    download_thread = threading.Thread(target=bgrd_proc, name="running_proc", args={user_preferences})
     download_thread.start()
 
     return {
