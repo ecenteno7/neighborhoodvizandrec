@@ -42,47 +42,6 @@ download_thread = None
 user_preferences = None
 
 
-
-@app.route('/poll-knn-proc', methods=['POST'])
-# @cross_origin()
-def poll_knn_proc():
-    global download_thread
-    global user_preferences
-    res = {
-        'message': 'KNN still calculating...',
-        'isComplete': False
-    }
-
-    if not download_thread.is_alive():
-
-        res = calculate_knn('knn_input.csv', 'knn_dataset.csv', 'chicago')
-        neighborhood_res = {
-            "neighborhoods": []
-        }
-
-        for neighborhood in res:
-            neighborhood_res['neighborhoods'].append({
-                'key': neighborhood,
-                'description': "Lorem ipsum dolor",
-                'pointsOfInterest': maps.get_popular_places(neighborhood, user_preferences['types']),
-            })
-
-
-        res = {
-            'message': 'KNN Calculated!',
-            'body': neighborhood_res,
-            'isComplete': True
-        }
-
-        user_preferences = None
-    
-
-    return res
-    
-download_thread = None
-user_preferences = None
-
-
 @app.route('/get-knn-result', methods=['POST'])
 # @cross_origin()
 def get_knn_result():
