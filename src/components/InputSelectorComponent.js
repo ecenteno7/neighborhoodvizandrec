@@ -97,6 +97,7 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
         const requestOptions = {
             method: 'POST',
+            mode: 'cors',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(req)
         };
