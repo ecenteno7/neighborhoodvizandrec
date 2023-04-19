@@ -142,7 +142,7 @@ def get_pie_chart_data():
     column = df.columns.values.tolist()[0]
     df = df.sort_values(by=[column], ascending=False).head(5).T
     response = Response(df.to_json())
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 

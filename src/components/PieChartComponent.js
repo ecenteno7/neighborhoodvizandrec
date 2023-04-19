@@ -28,7 +28,7 @@ export default function PieChartComponent({neighborhood}) {
 
     function getPieChartData(neighborhood) {
         console.log('neighborhood', neighborhood);
-        fetch(`http://localhost:81/get-pie-chart-data?neighborhood=${neighborhood}`)
+        fetch(`https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com/get-pie-chart-data?neighborhood=${neighborhood}`)
         .then(res => res.json())
         .then(
           (result) => {
