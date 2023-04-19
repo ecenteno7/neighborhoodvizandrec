@@ -102,8 +102,8 @@ export default function InputSelectorComponent({setMode, setResult}) {
         };
 
         console.log(req)
-
-        fetch('https://limitless-headland-03038.herokuapp.com//http://100.25.150.129:81/get-knn-result', requestOptions)
+        // https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com
+        fetch('https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com/get-knn-result', requestOptions)
             .then(response => response.json())
             .then(data => {console.log(data); setResult(data.body)});
 
