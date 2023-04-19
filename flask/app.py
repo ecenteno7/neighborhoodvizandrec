@@ -69,7 +69,7 @@ def get_knn_result():
     response = Response(res)
     response.headers.add('Access-Control-Allow-Origin', '*')
 
-    return 
+    return response
 
 
 def calculate_knn(input_file, knn_data_file, city):
