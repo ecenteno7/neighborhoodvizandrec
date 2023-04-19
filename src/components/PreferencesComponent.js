@@ -23,7 +23,7 @@ export default function PreferencesComponent({res}) {
               {pointOfInterest.pointsOfInterest.map((feature) => {
                 return <li>{feature}</li>;
               })}
-              <h2>Places of Interest Breakdown</h2>
+              <em>Places of Interest Breakdown</em>
               <PieChartComponent 
                 style={{
                   paddingLeft: 10,
