@@ -5,6 +5,7 @@ import traffic
 from flask import request
 from knn import run_knn
 import maps
+import threading
 
 import csv
 
@@ -25,19 +26,7 @@ def convert_list_to_csv(list, fn='knn_dataset.csv'):
         dict_writer.writeheader()
         dict_writer.writerows(list)
 
-
-@app.route('/get-knn-result', methods=['POST'])
-# @cross_origin()
-def get_knn_result():
-    # print(request.json['region'])
-    user_preferences = {
-        "city": "chicago",
-        "neighborhood": request.json['region'],
-        "start_time": request.json['startTime'],
-        "end_time": request.json['endTime'],
-        "types": request.json['places_of_interest']
-    }
-
+def bgrd_proc(user_preferences):
     res = []
 
     neighborhood_data = traffic.refresh_knn_dataset(user_preferences)
@@ -74,6 +63,29 @@ def get_knn_result():
     # response.headers.add('Access-Control-Allow-Origin', '*')
 
     return res
+    
+
+
+@app.route('/get-knn-result', methods=['POST'])
+# @cross_origin()
+def get_knn_result():
+    
+    print(request.json['region'])
+    user_preferences = {
+        "city": "chicago",
+        "neighborhood": request.json['region'],
+        "start_time": request.json['startTime'],
+        "end_time": request.json['endTime']
+    }
+
+    download_thread = threading.Thread(target=bgrd_proc, name="running_proc", args=user_preferences)
+    download_thread.start()
+
+    return {
+        'message': 'Input data received! KNN calculating...',
+    }
+
+    
 
 
 def calculate_knn(input_file, knn_data_file, city):
@@ -121,4 +133,4 @@ def get_pie_chart_data():
     return response
 
 
-app.run(host='0.0.0.0', port=81)
+app.run(host='0.0.0.0', port=80)
