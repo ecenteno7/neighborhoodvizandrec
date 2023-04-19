@@ -103,7 +103,7 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
         console.log(req)
 
-        fetch('https://cors-anywhere.herokuapp.com/http://100.25.150.129:81/get-knn-result', requestOptions)
+        fetch('https://cors-everywhere.herokuapp.com/http://100.25.150.129:81/get-knn-result', requestOptions)
             .then(response => response.json())
             .then(data => {console.log(data); setResult(data.body)});
 
