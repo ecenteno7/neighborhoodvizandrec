@@ -47,8 +47,6 @@ export default function PreferencesComponent({res}) {
               }}
             >
               <h2>{pointOfInterest.key}</h2>
-              <em>Description</em>
-              <p>{pointOfInterest.description}</p>
               <em>Areas you may enjoy:</em>
               {pointOfInterest.pointsOfInterest.map((feature) => {
                 return <li>{feature}</li>;

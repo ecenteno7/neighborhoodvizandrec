@@ -139,7 +139,7 @@ def get_popular_places(neighborhood, types):
         if place != None:
             popular_places.append(place)
     print("popular places: ", popular_places)
-    return popular_places
+    return list(set(popular_places))
 
 def get_feature_by_name(neighborhood_name):
     with open(".//neighborhoods/washingtondc.geojson") as f:

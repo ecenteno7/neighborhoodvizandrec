@@ -17,7 +17,7 @@ export default function MapCard({ mode, setMode, res }) {
 
     return (
         <>
-            <Grid item>
+            <Grid item >
                 <Paper
                     elevation={24}
                     style={{ margin: 20, width: 700, height: 700 }}

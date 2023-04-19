@@ -319,7 +319,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
                 </Select>
             </FormControl>
 
-            <Button variant="contained" onClick={handleSubmit}>SUBMIT</Button>
+            <Button style={{ margin: 20, width: 360 }} variant="contained" onClick={handleSubmit}>SUBMIT</Button>
         </>
     )
 }
