@@ -117,4 +117,4 @@ def backend():
     }
 
 # context = ('local.crt', 'local.key')
-app.run(host='0.0.0.0', port=80, ssl_context=context)
+app.run(host='0.0.0.0', port=80)
