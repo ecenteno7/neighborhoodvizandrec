@@ -25,7 +25,7 @@ def convert_list_to_csv(list, fn='knn_dataset.csv'):
 
 
 @app.route('/get-knn-result', methods=['POST'])
-@cross_origin()
+# @cross_origin()
 def get_knn_result():
     print(request.json['region'])
     user_preferences = {
