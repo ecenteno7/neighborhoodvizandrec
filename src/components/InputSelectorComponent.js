@@ -11,7 +11,7 @@ import chicago_geojson from "../resources/chicago.json";
 
 import { Button } from '@mui/material';
 
-export default function InputSelectorComponent({setMode, setResult}) {
+export default function InputSelectorComponent({ setMode, setResult }) {
     const [selectedRegion, setSelectedRegion] = React.useState("");
     const [selectedActivities, setSelectedActivities] = React.useState([]);
     const [selectedTimeBand, setSelectedTimeBand] = React.useState("");
@@ -63,7 +63,7 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
     const getTimeBands = () => {
         var menuItems = [];
-        
+
         Object.keys(timeBands).forEach((time, index) => {
             menuItems.push(<MenuItem value={time}>{time}</MenuItem>);
         });
@@ -83,6 +83,12 @@ export default function InputSelectorComponent({setMode, setResult}) {
         setSelectedActivities(typeof value === "string" ? value.split(",") : value);
     };
 
+    const sleep = (time) => {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+
+
     const handleSubmit = (event) => {
         setResult('pending')
         console.log(process.env.REACT_APP_API_KEY)
@@ -98,7 +104,7 @@ export default function InputSelectorComponent({setMode, setResult}) {
         const requestOptions = {
             method: 'POST',
             mode: 'cors',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(req)
         };
 
@@ -115,13 +121,19 @@ export default function InputSelectorComponent({setMode, setResult}) {
                             fetch('https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com/poll-knn-proc', requestOptions)
                                 .then(response => response.json())
                                 .then(data => {
-                                    if (data.body.isComplete) {
+
+                                    if (data.isComplete) {
                                         dataIsComplete = true;
                                         console.log(data)
                                         setResult(data.body)
                                         return
                                     }
+                                    
                                 });
+                            // Usage!
+                            sleep(500).then(() => {
+                                // Do something after the sleep!
+                            });
                         }
                     });
             })

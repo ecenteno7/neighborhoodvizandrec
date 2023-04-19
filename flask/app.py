@@ -57,7 +57,7 @@ def get_knn_result():
     }
 
 
-@app.route('/poll-knn-proc', methods=['GET'])
+@app.route('/poll-knn-proc', methods=['POST'])
 # @cross_origin()
 def poll_knn_proc():
     global download_thread
