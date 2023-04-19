@@ -12,8 +12,7 @@ import csv
 username = "postgres"
 password = "bobbydodd"
 
-engine = db.create_engine(
-    f"postgresql://{username}:{password}@cse6242-useast1-f-neighborhoodvizandrec-db.chc68arzrzci.us-east-1.rds.amazonaws.com:5432/DC_2021")
+engine = db.create_engine(f"postgresql://{username}:{password}@localhost:5432/traffic")
 
 
 def return_trips_between_times(start_time, end_time, city):
