@@ -4,8 +4,8 @@ from config import *
 import traffic
 from flask import request
 from knn import run_knn
-import maps
 import threading
+import maps
 
 import csv
 
@@ -35,36 +35,69 @@ def bgrd_proc(user_preferences):
 
     convert_list_to_csv(res, fn='knn_input.csv')
 
-<<<<<<< HEAD
-    res = calculate_knn('knn_input.csv', 'knn_dataset.csv',
-                        user_preferences['city'])
-    # res = ["Columbia Heights", "Logan Square", "Wicker Park"]
-    neighborhood_res = {
-        "neighborhoods": []
+    
+    return res
+    
+download_thread = None
+user_preferences = None
+
+
+@app.route('/get-knn-result', methods=['POST'])
+# @cross_origin()
+def get_knn_result():
+    global download_thread
+    global user_preferences
+    print(request.json['region'])
+    user_preferences = {
+        "city": "chicago",
+        "neighborhood": request.json['region'],
+        "start_time": request.json['startTime'],
+        "end_time": request.json['endTime'],
+        "types": request.json['places_of_interest']
     }
 
-    for neighborhood in res:
-        neighborhood_res['neighborhoods'].append({
-            'key': neighborhood,
-            'description': "Lorem ipsum dolor",
-            # 'pointsOfInterest': [
-            #     "Ormsby's",
-            #     "Puttshack",
-            #     "Fire Maker Brewing Company",
-            # ],
-            'pointsOfInterest': maps.get_popular_places(neighborhood, user_preferences['types']),
-        })
+    download_thread = threading.Thread(target=bgrd_proc, name="running_proc", args=(user_preferences, ))
+    download_thread.start()
 
+    return {
+        'message': 'Input data received! KNN calculating...',
+    }
+
+
+@app.route('/poll-knn-proc', methods=['POST'])
+# @cross_origin()
+def poll_knn_proc():
+    global download_thread
+    global user_preferences
     res = {
-        'message': 'Input data received! KNN Calculated',
-        'body': neighborhood_res
+        'message': 'KNN still calculating...',
+        'isComplete': False
     }
 
-    # response = Response(res)
-    # response.headers.add('Access-Control-Allow-Origin', '*')
+    if not download_thread.is_alive():
 
-=======
->>>>>>> efcd507 (Added poll check)
+        res = calculate_knn('knn_input.csv', 'knn_dataset.csv', 'chicago')
+        neighborhood_res = {
+            "neighborhoods": []
+        }
+
+        for neighborhood in res:
+            neighborhood_res['neighborhoods'].append({
+                'key': neighborhood,
+                'description': "Lorem ipsum dolor",
+                'pointsOfInterest': maps.get_popular_places(neighborhood, user_preferences['types']),
+            })
+
+
+        res = {
+            'message': 'KNN Calculated!',
+            'body': neighborhood_res,
+            'isComplete': True
+        }
+
+        user_preferences = None
+    
+
     return res
     
 download_thread = None
