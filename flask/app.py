@@ -63,6 +63,7 @@ def poll_knn_proc():
     global download_thread
     res = {
         'message': 'KNN still calculating...',
+        'isComplete': False
     }
 
     if not download_thread.is_alive():
@@ -87,7 +88,8 @@ def poll_knn_proc():
 
         res = {
             'message': 'KNN Calculated!',
-            'body': neighborhood_res
+            'body': neighborhood_res,
+            'isComplete': True
         }
 
     return res
