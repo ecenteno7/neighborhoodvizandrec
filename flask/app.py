@@ -99,7 +99,7 @@ def poll_knn_proc():
     }
 
     if not download_thread.is_alive():
-        download_thread.stop()
+        # download_thread.stop()
         res = calculate_knn('knn_input.csv', 'knn_dataset.csv',
                         'chicago')
 
