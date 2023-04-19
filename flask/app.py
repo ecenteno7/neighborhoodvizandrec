@@ -91,6 +91,8 @@ def poll_knn_proc():
             'body': neighborhood_res,
             'isComplete': True
         }
+    
+    download_thread.stop()
 
     return res
 
