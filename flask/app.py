@@ -66,10 +66,10 @@ def get_knn_result():
         'body': neighborhood_res
     }
 
-    response = Response(res)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    # response = Response(res)
+    # response.headers.add('Access-Control-Allow-Origin', '*')
 
-    return response
+    return res
 
 
 def calculate_knn(input_file, knn_data_file, city):
