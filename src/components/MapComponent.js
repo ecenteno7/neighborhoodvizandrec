@@ -78,6 +78,7 @@ class MapComponent extends Component {
     paint: {
       "fill-color": "red",
       "fill-opacity": 0.2,
+      "fill-outline-color": "yellow",
     },
   };
 
@@ -87,6 +88,7 @@ class MapComponent extends Component {
     paint: {
       "fill-color": "blue",
       "fill-opacity": 0.6,
+      "fill-outline-color": "yellow",
     },
   };
 
