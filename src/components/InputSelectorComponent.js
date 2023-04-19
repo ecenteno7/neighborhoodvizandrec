@@ -16,7 +16,127 @@ export default function InputSelectorComponent({setMode, setResult}) {
     const [selectedActivities, setSelectedActivities] = React.useState([]);
     const [selectedTimeBand, setSelectedTimeBand] = React.useState("");
 
-    const activities = ["Biking", "Hiking", "Running", "Swimming", "Walking"];
+    // const activities = ["Biking", "Hiking", "Running", "Swimming", "Walking"];
+    
+    const activities = [
+        "Wineries",
+        "Transportation Services",
+        "Taxis",
+        "Food Markets",
+        "Convenience Stores",
+        "Grocery Stores",
+        "Grocers Health Foods",
+        "Seafood Markets",
+        "Farm Markets",
+        "Bakers Cake & Pie",
+        "Doughnuts",
+        "Miscellaneous Food Stores",
+        "Electric Charging Station",
+        "Children's Clothing",
+        "Clothing Retail",
+        "Sportswear",
+        "Ice Cream Parlors",
+        "Foods Carry Out",
+        "(All) Restaurants",
+        "Delicatessens",
+        "Cafeterias",
+        "Cafes",
+        "Appetizers & Snacks Etc",
+        "Subs & Sandwiches",
+        "Theatres Dinner",
+        "Coffee Shops",
+        "Tea Rooms",
+        "Juice Bars",
+        "Restaurants Cyber Cafes",
+        "Bars",
+        "Discotheques",
+        "Cocktail Lounges",
+        "Pubs",
+        "Comedy Clubs",
+        "Karaoke Clubs",
+        "Pharmacies",
+        "Wines Retail",
+        "Flea Markets",
+        "Book Stores",
+        "Toy Stores",
+        "Gift Shops",
+        "Art Galleries & Dealers",
+        "Monuments",
+        "Shopping Centers & Malls",
+        "Hotels & Motels",
+        "Cottages & Cabins",
+        "Bed & Breakfasts",
+        "Chalet & Cabin Rentals",
+        "Skiing Centers & Resorts",
+        "Resorts",
+        "Villas",
+        "Hostels",
+        "Adventure Games & Activities",
+        "Campgrounds",
+        "Manicurists",
+        "Barbers",
+        "Movie Theatres",
+        "Movie Theatres (drive-Ins)",
+        "Theatres Live",
+        "Concert Venues",
+        "Entertainment Bureaus",
+        "Bowling Centers",
+        "Stadiums Arenas & Athletic Fields",
+        "Race Tracks",
+        "Horse Racing",
+        "Health Clubs & Gyms",
+        "Golf Courses-Public Or Private",
+        "Casinos",
+        "Arcades",
+        "Amusement Places",
+        "Water Parks",
+        "Amusement Parks",
+        "Recreation Centers",
+        "Hockey Clubs",
+        "Flying Clubs",
+        "Beach & Cabana Clubs",
+        "Sports Recreational",
+        "Skating Rinks",
+        "Bicycles Renting",
+        "Baths Bath Houses Spas & Saunas",
+        "Billiard Parlors",
+        "Fairgrounds",
+        "Historical Places",
+        "Parks",
+        "Picnic Grounds",
+        "Horseback Riding",
+        "Swimming Pools Public",
+        "Tennis Courts Public",
+        "Squash Courts Public",
+        "Colleges & Universities",
+        "Hiking Backpacking & Mountaineering Service",
+        "Museums",
+        "Planetariums",
+        "Cultural Centres",
+        "National Monuments",
+        "Zoos",
+        "Arboretums",
+        "Aquariums Public",
+        "Motoring Organisations",
+        "Clubs",
+        "Community Organizations",
+        "(All) Places Of Worship",
+        "Dance Clubs",
+        "Beach",
+        "Cave",
+        "Forest",
+        "Ridge",
+        "Valley",
+        "Bay",
+        "Rapids",
+        "Reservoir",
+        "Swamp",
+        "Bridge",
+        "Building",
+        "Dam",
+        "Tower",
+        "Tourist Attractions"
+    ]
 
     const timeBands = {
         'Early Morning': {
@@ -38,12 +158,12 @@ export default function InputSelectorComponent({setMode, setResult}) {
     }
 
     function getRegions() {
-        console.log(chicago_geojson);
+        // console.log(chicago_geojson);
         var regions = [];
         var regions = chicago_geojson.features.map((feature) => {
             return feature.properties.name;
         });
-        console.log(regions);
+        // console.log(regions);
         return regions;
     }
 
@@ -90,7 +210,8 @@ export default function InputSelectorComponent({setMode, setResult}) {
             region: selectedRegion,
             activities: selectedActivities,
             startTime: timeBands[selectedTimeBand]['startTime'],
-            endTime: timeBands[selectedTimeBand]['endTime']
+            endTime: timeBands[selectedTimeBand]['endTime'],
+            places_of_interest: selectedActivities
         }
 
         setMode('map2')
@@ -103,7 +224,8 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
         console.log(req)
 
-        fetch('https://cors-anywhere.herokuapp.com/http://100.25.150.129:81/get-knn-result', requestOptions)
+        // fetch('https://cors-anywhere.herokuapp.com/http://100.25.150.129:81/get-knn-result', requestOptions)
+        fetch('http://localhost:81/get-knn-result', requestOptions)
             .then(response => response.json())
             .then(data => {console.log(data); setResult(data.body)});
 

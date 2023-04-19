@@ -64,7 +64,7 @@ def refresh_knn_dataset(user_preferences):
     late_am_dc_trips_w_neighbhoods = return_trips_in_neighbhorhood(
         late_am_dc_trips, user_preferences['city'], user_preferences['neighborhood'])
 
-    print(late_am_dc_trips_w_neighbhoods)
+    # print(late_am_dc_trips_w_neighbhoods)
 
     entry = {}
 
@@ -74,8 +74,8 @@ def refresh_knn_dataset(user_preferences):
     count = 0
 
     for index, row in late_am_dc_trips_w_neighbhoods.iterrows():
-        print(
-            f'completed {count} of {late_am_dc_trips_w_neighbhoods.shape[0]}')
+        # print(
+        #     f'completed {count} of {late_am_dc_trips_w_neighbhoods.shape[0]}')
         if count == restrict_traffic_trips:
             break
 
@@ -90,9 +90,9 @@ def refresh_knn_dataset(user_preferences):
             continue
         
         for idx, poi in poi_df.iterrows():
-            print(poi['group_sic_code_name_ext'], poi['group_sic_code'])
+            # print(poi['group_sic_code_name_ext'], poi['group_sic_code'])
             if poi['group_sic_code_name_ext'] != '' and poi['group_sic_code_name_ext'] in poi_categories:
-                print(row['dropoff_count'])
+                # print(row['dropoff_count'])
                 entry[poi['group_sic_code_name_ext']] = entry[poi['group_sic_code_name_ext']] + row['dropoff_count']
             
             # Using Google Maps Places API
@@ -101,7 +101,7 @@ def refresh_knn_dataset(user_preferences):
         
         count += 1
 
-    print(entry)
+    # print(entry)
 
     return entry
 
@@ -185,9 +185,9 @@ def tag_poi_in_at_location_mapquest(api, location):
         try: 
             for result in response.json()['searchResults']:
                 records.append(result['fields'])
-            print(pd.DataFrame(records))
+            # print(pd.DataFrame(records))
             res = pd.DataFrame(records)
-            print(res[['group_sic_code_name_ext', 'name']])
+            # print(res[['group_sic_code_name_ext', 'name']])
             return res
         except Exception as e:
             print(e)
