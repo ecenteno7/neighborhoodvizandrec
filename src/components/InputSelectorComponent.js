@@ -236,7 +236,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
             .then(data => {
                 fetch('https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com/poll-knn-proc', requestOptions)
                     .then(response => response.json())
-                    .then(data => {
+                    .then(async (data) => {
                         let dataIsComplete = false;
                         while (!dataIsComplete) {
                             fetch('https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com/poll-knn-proc', requestOptions)
@@ -252,9 +252,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
                                     
                                 });
                             // Usage!
-                            sleep(500).then(() => {
-                                // Do something after the sleep!
-                            });
+                            await sleep(5000);
                         }
                     });
             })
