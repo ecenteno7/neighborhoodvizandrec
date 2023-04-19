@@ -63,7 +63,6 @@ def get_knn_result():
         'message': 'Input data received! KNN calculating...',
     }
 
-
 @app.route('/poll-knn-proc', methods=['POST'])
 # @cross_origin()
 def poll_knn_proc():
@@ -86,6 +85,7 @@ def poll_knn_proc():
                 'key': neighborhood,
                 'description': "Lorem ipsum dolor",
                 'pointsOfInterest': maps.get_popular_places(neighborhood, user_preferences['types']),
+                'chartData': maps.get_pie_chart_data(neighborhood, user_preferences['types'])
             })
 
 
@@ -134,16 +134,26 @@ def backend():
 
 @app.route('/get-pie-chart-data')
 def get_pie_chart_data():
+    response = [
+        ['Activity', 'Trips']
+    ]
     neighborhood = request.args.get('neighborhood')
+    types = request.args.get('types').split(',')
     df = pd.read_csv('./neighborhoods/washingtondc_neighborhood_category_counts_transpose.csv')
     df = df[df.Neighborhood == neighborhood]
-    df = df.drop(['Neighborhood'], axis=1).T
+    df = df.drop(['Neighborhood'], axis=1)
     print(df)
-    column = df.columns.values.tolist()[0]
-    df = df.sort_values(by=[column], ascending=False).head(5).T
-    response = Response(df.to_json())
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    for type in types:
+        response.append([type, int(df[type].values[0])])
+        df.drop([type], axis=1)
+        print(response)
+
+    response.append(['Other', int(df.sum(axis=1).values[0])])
+    print(response)
+    return {
+        'message': 'Chart data retrieved successfully!',
+        'body': response
+    }
 
 
 app.run(host='0.0.0.0', port=80)

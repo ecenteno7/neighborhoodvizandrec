@@ -5,6 +5,7 @@ import neighborhood_methods as nm
 from shapely.geometry import Point, shape, Polygon, MultiPolygon
 import config
 import requests
+import pandas as pd
 
 def get_gmaps_info(apikey, lat, lon, search_types=["restaurant", "cafe", "meal_delivery", "meal_takeaway"], debug=False):
     gmaps = googlemaps.Client(key=apikey)
@@ -160,7 +161,7 @@ def get_popular_place(neighborhood, type):
             lon = n_centroid.x
 
             type = config.poi_map[type]
-            api_key = "INSERT GOOGLE API KEY HERE"
+            api_key = "AIzaSyDax4lu6m_obzXgAcO6ZB3W7yX-Locw0BI"
             query = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?type={type}&location={lat},{lon}&radius=500&key={api_key}"
             # print(query)
             search_results = requests.get(query).json()
@@ -170,6 +171,23 @@ def get_popular_place(neighborhood, type):
 
             if search_result != 0:
                 return search_result.get('name')
+
+def get_pie_chart_data(neighborhood, types):
+    response = [
+        ['Activity', 'Trips']
+    ]
+    df = pd.read_csv('./neighborhoods/washingtondc_neighborhood_category_counts_transpose.csv')
+    df = df[df.Neighborhood == neighborhood]
+    df = df.drop(['Neighborhood'], axis=1)
+    print(df)
+    for type in types:
+        response.append([type, int(df[type].values[0])])
+        df.drop([type], axis=1)
+        print(response)
+
+    response.append(['Other', int(df.sum(axis=1).values[0])])
+    print(response)
+    return response
 
 # nyc_details = characterize_city("nyc")
 # print(nyc_details.keys())

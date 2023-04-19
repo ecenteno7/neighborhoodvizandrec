@@ -7,50 +7,50 @@ function getOptions(neighborhood) {
     }
 }
 
-function processData(data) {
-    let processedData = [];
-    processedData.push(['Activity', 'Trips']);
-    let activities = Object.keys(data);
-    console.log(data[activities[0]]);
-    let foo = Object.keys(data[activities[0]]);
-    console.log(activities);
-    console.log(foo[0]);
-    activities.forEach((activity) => {
-        processedData.push([activity, data[activity][foo[0]]]);
-    });
-    console.log(processData);
-    return processedData;
-}
+// function processData(data) {
+//     let processedData = [];
+//     processedData.push(['Activity', 'Trips']);
+//     let activities = Object.keys(data);
+//     console.log(data[activities[0]]);
+//     let foo = Object.keys(data[activities[0]]);
+//     console.log(activities);
+//     console.log(foo[0]);
+//     activities.forEach((activity) => {
+//         processedData.push([activity, data[activity][foo[0]]]);
+//     });
+//     console.log(processData);
+//     return processedData;
+// }
 
-export default function PieChartComponent({neighborhood}) {
-    const [data, setData] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+export default function PieChartComponent({neighborhood, data}) {
+    // const [data, setData] = useState([]);
+    // const [isLoaded, setIsLoaded] = useState(false);
 
-    function getPieChartData(neighborhood) {
-        console.log('neighborhood', neighborhood);
-        fetch(`https://limitless-headland-03038.herokuapp.com/http://ec2-100-25-150-129.compute-1.amazonaws.com/get-pie-chart-data?neighborhood=${neighborhood}`)
-        .then(res => res.json())
-        .then(
-          (result) => {
-              setIsLoaded(true);
-              let processedData = processData(result);
-              setData(processedData);
-              console.log("data", processedData);
-          },
-          (error) => {
-              setIsLoaded(true);
-              // setError(error);
-          }
-        )
-    }
+    // function getPieChartData(neighborhood) {
+    //     console.log('neighborhood', neighborhood);
+    //     fetch(`http://localhost:81/get-pie-chart-data?neighborhood=${neighborhood}`)
+    //     .then(res => res.json())
+    //     .then(
+    //       (result) => {
+    //           setIsLoaded(true);
+    //           let processedData = processData(result);
+    //           setData(processedData);
+    //           console.log("data", processedData);
+    //       },
+    //       (error) => {
+    //           setIsLoaded(true);
+    //           // setError(error);
+    //       }
+    //     )
+    // }
 
-    useEffect(() => {
-        getPieChartData(neighborhood);
-      }, [neighborhood])
+    // useEffect(() => {
+    //     getPieChartData(neighborhood);
+    //   }, [neighborhood])
 
-    if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
+    // if (!isLoaded) {
+    //     return <div>Loading...</div>;
+    // } else {
         return (
             <Chart
             chartType="PieChart"
@@ -60,5 +60,5 @@ export default function PieChartComponent({neighborhood}) {
             height={"400px"}
             />
         );
-    }
+    // }
 }
