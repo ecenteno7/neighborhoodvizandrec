@@ -218,13 +218,13 @@ export default function InputSelectorComponent({setMode, setResult}) {
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json', 'mode': 'no-cors'},
             body: JSON.stringify(req)
         };
 
         console.log(req)
 
-        fetch('https://cors-everywhere.herokuapp.com/http://100.25.150.129:81/get-knn-result', requestOptions)
+        fetch('https://limitless-headland-03038.herokuapp.com//http://100.25.150.129:81/get-knn-result', requestOptions)
             .then(response => response.json())
             .then(data => {console.log(data); setResult(data.body)});
 
