@@ -165,6 +165,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
         });
         regions.sort();
         // console.log(regions);
+        regions.sort();
         return regions;
     }
 
