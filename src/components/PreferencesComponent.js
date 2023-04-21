@@ -19,12 +19,12 @@ export default function PreferencesComponent({res}) {
               }}
             >
               <h2>{pointOfInterest.key}</h2>
-              <em>Areas you may enjoy:</em>
+              <em>Locations to try out:</em>
               {pointOfInterest.pointsOfInterest.map((feature) => {
                 return <li>{feature}</li>;
               })}
-            </div>
-            <PieChartComponent 
+              <em>Places of Interest Breakdown</em>
+              <PieChartComponent 
                 style={{
                   paddingLeft: 10,
                   paddingRight: 10,
@@ -35,6 +35,9 @@ export default function PreferencesComponent({res}) {
                 data={pointOfInterest.chartData}
               >
               </PieChartComponent>
+              <p>Shown above is the breakdown of counts of locations that you prefer based off of your activity selections. "Other" denotes activities that you did not select.</p>
+            </div>
+            
           </Paper>
         </Grid>
       );
