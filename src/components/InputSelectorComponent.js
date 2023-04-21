@@ -164,6 +164,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
             return feature.properties.name;
         });
         // console.log(regions);
+        regions.sort();
         return regions;
     }
 
@@ -207,7 +208,14 @@ export default function InputSelectorComponent({ setMode, setResult }) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
-
+    const getActivities = () => {
+        activities.sort();
+        var menuItems = [];
+        activities.forEach((activity) => {
+            menuItems.push(<MenuItem value={activity}>{activity}</MenuItem>);
+        });
+        return menuItems;
+    };
 
     const handleSubmit = (event) => {
         setResult('pending')
@@ -299,11 +307,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
                         </Box>
                     )}
                 >
-                    {activities.map((activity) => (
-                        <MenuItem key={activity} value={activity}>
-                            {activity}
-                        </MenuItem>
-                    ))}
+                    {getActivities()}
                 </Select>
             </FormControl>
             <FormControl fullWidth style={{ margin: 20, width: 360 }}>
