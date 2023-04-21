@@ -163,6 +163,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
         var regions = chicago_geojson.features.map((feature) => {
             return feature.properties.name;
         });
+        regions.sort();
         // console.log(regions);
         return regions;
     }
@@ -207,7 +208,15 @@ export default function InputSelectorComponent({ setMode, setResult }) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
+    const getActivities = () => {
+        var menuItems = [];
+        activities.sort();
+        activities.forEach((activity) => {
+            menuItems.push(<MenuItem value={activity}>{activity}</MenuItem>);
+        });
 
+        return menuItems;
+    };
 
     const handleSubmit = (event) => {
         setResult('pending')
@@ -299,11 +308,7 @@ export default function InputSelectorComponent({ setMode, setResult }) {
                         </Box>
                     )}
                 >
-                    {activities.map((activity) => (
-                        <MenuItem key={activity} value={activity}>
-                            {activity}
-                        </MenuItem>
-                    ))}
+                    {getActivities()}
                 </Select>
             </FormControl>
             <FormControl fullWidth style={{ margin: 20, width: 360 }}>
