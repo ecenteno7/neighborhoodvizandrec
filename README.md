@@ -18,7 +18,11 @@ This application is a full-stack web application that is a recommendation system
 - src/ : front-end code directory
   - components
     - InputSelectorComponent.js
-    - 
+    - LeftContextCard.js
+    - MapCard.js
+    - MapComponent.js
+    - PieChartComponent.js
+    - PreferencesComponent.js
   - resources
     - *.json: Various geojson files used to render maps on front-end
   - App.js : main driver code for front-end application
