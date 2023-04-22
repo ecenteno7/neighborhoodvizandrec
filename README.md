@@ -33,12 +33,15 @@ This application is a full-stack web application that is a recommendation system
 
 ### Installation
 No installation is needed, simply visit our web application. (https://main.d6ofziz7ed03g.amplifyapp.com/)
+
+Code is stored on GitHub as well at https://github.com/ecenteno7/neighborhoodvizandrec
+
 ### Execution
 * Visit https://main.d6ofziz7ed03g.amplifyapp.com/
 * Run the following experiments to produce results:
 
 #### Experiment 1
-* Select Region: [Wicker Park], Activities: [Health Clubs & Gyms, Cafe], Time: [Morning]
+* Select Region: [Wicker Park], Activities: [Bars, Grocery Stores, Cafe], Time: [Morning]
 * Let Results Load (this could take 5-10 minutes if running off of a cold start, which it probably will be. Normal usage runtime is 2-3 minutes) 
 * View Results
 
