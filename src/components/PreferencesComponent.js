@@ -19,10 +19,10 @@ export default function PreferencesComponent({res}) {
               }}
             >
               <h2>{pointOfInterest.key}</h2>
-              <em>Locations to try out:</em>
+              {/* <em>Locations to try out:</em>
               {pointOfInterest.pointsOfInterest.map((feature) => {
                 return <li>{feature}</li>;
-              })}
+              })} */}
               <em>Places of Interest Breakdown</em>
               <PieChartComponent 
                 style={{
