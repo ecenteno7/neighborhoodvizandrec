@@ -46,3 +46,5 @@ No installation is needed, simply visit our web application. (https://main.d6ofz
 * Select Region: [Loop], Activities: [Parks, Museums], Time: [Afternoon]
 * Let Results Load (this could take 5-10 minutes if running off of a cold start, which it probably will be. Normal usage runtime is 2-3 minutes) 
 * View Results
+
+NOTE: if experiments take longer than 10 minutes to run, please contact ecenteno3@gatech.edu or zcox6@gatech.edu. Our server may need to be reset. 
